@@ -1,0 +1,116 @@
+
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Сюцай - преобразование данных в число энергии</title>
+	<style>
+		*,
+		*::before,
+		*::after {
+			box-sizing: border-box;
+		}
+
+				html, body {
+			height: 100%; 
+			width: 100%; 
+			background-color: #343d46;
+		}
+
+		table {
+			margin: 0px auto;
+			height: 100%;
+		}
+
+
+		.flex-container {
+			display: flex;
+			height: 100px;
+			padding: 20px;
+			font-size: 50px;
+			color: #636363;
+			width: 800px;
+			margin: 0px auto;
+			text-align: center;
+		}
+		.input {
+			display: flex;
+			font-family: Times;
+			height: 100px;
+			font-size: 75px;
+			background: #6cf;
+			text-align: center; 
+		}
+
+		.output {
+			display: center;
+			height: 100px;
+			padding: 20px;
+			font-size: 75px;
+			font-family: Times;
+			color: #ff6d01;
+			width: 800px;
+			margin: 0 auto;
+		}
+
+
+
+	</style>
+</head>
+<body>
+
+
+
+	<table>
+		<tr>
+			<td>
+				<div class="flex-container" style="align-items: center;">
+					Введите любые цифры или буквы на латинице
+				</div>
+				<br>
+				<div class="flex-container" style="align-items: center;">		
+					<input type="text" id="input" class="input">	
+
+				</div>
+
+				<div class="flex-container" style="align-items: center;">
+					<div class="output"> энергия <span id="result">0</span> </div>
+				</div>
+			</td>
+		</tr>
+	</table>
+	
+	<script>
+/// карта латинских букв
+const suzai = new Map(
+	[['a',1],['i',1],['j',1],['q',1],['y',1],['b',2],['k',2],['r',2],['c',3],['l',3],['s',3],['g',3],['d',4],['m',4],['t',4],['e',5],['h',5],['n',5],['x',5],['u',6],['v',6],['w',6],['o',7],['z',7],['f',8],['p',8]]
+	);
+
+// конвертируем в цифру (число, состоящее из 1 символа)
+const toOne = (a, b) => { let sum = Number(a) + Number(b); return sum > 9 ? sum = String(sum).split('').reduce(toOne) : sum;}
+
+function convertLatinToNumeral(val){
+	return val.toString().toLowerCase().split('')
+	.map(i => typeof suzai.get(i) === "undefined"  && !isNumeric(i) ? 0 : i)
+	.map(i => isNumeric(i) ? numberToOne(i) : suzai.get(i)).reduce(toOne);
+}
+
+function numberToOne(val){
+	return val.toString().split('').reduce(toOne);
+}
+
+function isNumeric(n) {
+	return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
+
+input.oninput = function() {
+	result.innerHTML = input.value == '' ? 0 : result.innerHTML = convertLatinToNumeral(input.value);
+};
+
+
+</script>
+
+<br>
+</body>
+</html>
+
